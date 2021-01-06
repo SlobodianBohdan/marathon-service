@@ -1,0 +1,54 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      sec:authorize="isAuthenticated()">
+<div th:replace="~{/fragments :: js-lb}"></div>
+<div th:replace="~{/fragments :: header}"></div>
+<div th:replace="~{/fragments :: navbar}"></div>
+<body>
+<table border="2" class="table <#if active?? && !active>table-dark <#else> table-striped </#if>">
+    <thead class="<#if active?? && !active>thead-light <#else> thead-dark </#if>">
+    <tr>
+        <th scope="col" > Id</th>
+        <th scope="col" > Title</th>
+        <span th:if="${!add}">
+            <th scope="col" sec:authorize="hasAuthority('MENTOR')"> Edit</th>
+            <th scope="col" sec:authorize="hasAuthority('MENTOR')"> Delete</th>
+            <th scope="col" sec:authorize="hasAuthority('MENTOR')"> Add student</th>
+        </span>
+        <span th:if="${add}">
+            <th scope="col" class="col-2" sec:authorize="hasAuthority('MENTOR')"> Select</th>
+        </span>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="marathon : ${marathons}">
+        <th scope="row" th:text="${marathon.id}"> Id</th>
+        <td>
+            <a th:href="@{/marathons/{marathon_id}/students(marathon_id = ${marathon.id})}" th:text="${marathon.title}"> Title </a>
+        </td>
+        <span th:if="${!add}">
+        <td sec:authorize="hasAuthority('MENTOR')">
+            <a th:href="@{/marathons/edit/{id}(id = ${marathon.id})}"> Edit </a>
+        </td>
+        <td sec:authorize="hasAuthority('MENTOR')">
+            <a th:href="@{/marathons/delete/{id}(id = ${marathon.id})}"> Delete </a>
+        </td>
+        <td sec:authorize="hasAuthority('MENTOR')">
+            <a th:href="@{/students/{marathon_id}/add(marathon_id = ${marathon.id})}"> Add student </a>
+        </td>
+        </span>
+        <span th:if="${add}">
+        <td sec:authorize="hasAuthority('MENTOR')">
+            <a th:href="@{/students/{student_id}/addMarathon/{marathon_id}(marathon_id = ${marathon.id},student_id=${student_id})}"> Select </a>
+        </td>
+        </span>
+    </tr>
+    </tr>
+    </tbody>
+</table>
+<!--<td>-->
+<!--    <button onclick="window.location.href='/marathons/create'">Create</button>-->
+<!--</td>-->
+</body>
+</html>

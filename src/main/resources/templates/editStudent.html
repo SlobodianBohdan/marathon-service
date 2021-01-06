@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      sec:authorize="isAuthenticated()">
+<div th:replace="~{/fragments :: js-lb}"></div>
+<div th:replace="~{/fragments :: header}"></div>
+<div th:replace="~{/fragments :: navbar}"></div>
+<body>
+<div sec:authorize="hasAuthority('MENTOR')">
+    <form th:id="user" th:action="@{/students/edit}" th:object="${student}" method="post">
+        <h3>Marathon info</h3>
+        <fieldset>
+            <label>Id:</label>
+            <input type="text" name="id" th:value="${student.id}" readonly>
+        </fieldset>
+        <fieldset>
+            <label>First Name:</label>
+            <input type="text" name="firstName" th:value="${student.firstName}">
+        </fieldset>
+        <fieldset>
+            <label>Last Name:</label>
+            <input type="text" name="lastName" th:value="${student.lastName}">
+        </fieldset>
+        <fieldset>
+            <label>Role:</label>
+            <input type="text" name="role" th:value="${student.role}" readonly>
+        </fieldset>
+        <fieldset>
+            <label>Email:</label>
+            <input type="email" name="email" th:value="${student.email}">
+        </fieldset>
+        <fieldset>
+            <label>Password:</label>
+            <input type="password" name="password" th:value="${student.password}" readonly>
+        </fieldset>
+        <button type="submit" > UPDATE </button>
+    </form>
+</div>
+</body>
+</html>

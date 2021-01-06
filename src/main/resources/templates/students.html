@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      sec:authorize="isAuthenticated()">
+<div th:replace="~{/fragments :: js-lb}"></div>
+<div th:replace="~{/fragments :: header}"></div>
+<div th:replace="~{/fragments :: navbar}"></div>
+
+<body>
+<table border="2" class="table <#if active?? && !active>table-dark <#else> table-striped </#if>">
+    <thead class="<#if active?? && !active>thead-light <#else> thead-dark </#if>">
+    <tr>
+        <th scope="col" > Id</th>
+        <th scope="col" > Name</th>
+        <span th:if="${!add}" sec:authorize="hasAuthority('MENTOR')">
+        <th scope="col"> Edit</th>
+        <th scope="col" > Remove</th>
+            <th scope="col" > Add marathon</th>
+        </span>
+        <span th:if="${add}">
+            <th scope="col"> Select</th>
+        </span>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="student : ${students}">
+        <th scope="row"  th:text="${student.id}"> Id</th>
+        <td>
+            <a th:href="@{/students}" th:text="${student.getFirstName() + ' ' + student.getLastName()}"> First
+                name</a>
+        </td>
+        <span th:if="${!add}" sec:authorize="hasAuthority('MENTOR')">
+        <td>
+            <a th:href="@{/students/edit/{id}(id = ${student.id})}"> Edit </a>
+        </td>
+        <td>
+            <span th:if="${marathon_id !=  null}">
+                <a th:href="@{/students/{marathon_id}/delete/{student_id}(marathon_id = ${marathon_id},student_id=${student.id})}"> Remove </a>
+            </span>
+            <span th:if="${marathon_id ==  null}">
+                <a th:href="@{/students/delete/{student_id}(student_id=${student.id})}"> Remove </a>
+            </span>
+            <td>
+                <a th:href="@{/students/{student_id}/addMarathon(student_id=${student.id})}"> Add marathon </a>
+            </td>
+        </td>
+        </span>
+        <span th:if="${add}">
+        <td>
+            <a th:href="@{/students/{marathon_id}/add/{student_id}(marathon_id = ${marathon_id},student_id=${student.id})}"> Select </a>
+        </td>
+        </span>
+    </tr>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

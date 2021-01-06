@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<div th:replace="~{/fragments :: js-lb}"></div>
+<div th:replace="~{/fragments :: header}"></div>
+<div th:replace="~{/fragments :: navbar}"></div>
+<body>
+<div>
+    <form th:id="marathon" th:action="@{/marathons/create}" th:object="${marathon}" method="post">
+        <h3>Marathon form</h3>
+        <fieldset>
+            <label>Title:</label>
+            <input type="text" name="title" >
+        </fieldset>
+        <button type="submit">CREATE</button>
+    </form>
+</div>
+</body>
+</html>
